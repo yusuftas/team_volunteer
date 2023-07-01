@@ -1,10 +1,14 @@
+require('dotenv').config();
 const express = require('express');
+
 const mongoose = require('mongoose');
-const { PORT, MONGODB_URI } = require('./config/config');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 
 const app = express();
+
+console.log(process.env.PORT);
+console.log(process.env.MONGODB_URI);
 
 // Middleware
 app.use(express.json());
@@ -14,12 +18,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
 // Connect to MongoDB
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to MongoDB.');
     // Start the server
-    app.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT}.`);
+    app.listen(process.env.PORT, () => {
+      console.log(`Server listening on port ${process.env.PORT}.`);
     });
   })
   .catch((error) => {
